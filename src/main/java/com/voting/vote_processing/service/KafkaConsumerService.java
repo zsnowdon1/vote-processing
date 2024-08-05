@@ -1,9 +1,9 @@
 package com.voting.vote_processing.service;
 
-import org.springframework.kafka.support.Acknowledgment;
+import com.voting.vote_processing.entity.Vote;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface KafkaConsumerService {
-    void kafkaConsumer(String message, Acknowledgment acknowledgment);
+    void kafkaConsumer(Object message, Vote vote);
 }
