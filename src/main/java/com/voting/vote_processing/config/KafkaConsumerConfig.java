@@ -26,6 +26,9 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
+    @Value("${spring.kafka.consumer.properties.max.poll.interval.ms}")
+    private String retryTimer;
+
     @Bean
     public ConsumerFactory<String, Vote> consumerFactory() {
         JsonDeserializer<Vote> deserializer = new JsonDeserializer<>(Vote.class);
@@ -38,6 +41,13 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+
+        // Retry and backoff configurations
+        props.put(ConsumerConfig.RETRY_BACKOFF_MS_CONFIG, retryTimer); // Backoff after a failure
+        props.put(ConsumerConfig.RECONNECT_BACKOFF_MS_CONFIG, 5000); // Initial backoff before retrying
+        props.put(ConsumerConfig.RECONNECT_BACKOFF_MAX_MS_CONFIG, 30000); // Maximum backoff between retries
+        props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, 300000); // Longer poll interval to prevent consumer group rebalancing issues
+        props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 15000);
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
     }
 
