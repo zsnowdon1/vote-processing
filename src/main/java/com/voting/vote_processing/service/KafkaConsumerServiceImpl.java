@@ -1,6 +1,6 @@
 package com.voting.vote_processing.service;
 
-import com.voting.vote_processing.entity.Vote;
+import com.voting.vote_processing.entity.SurveyRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,7 +13,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
     @Override
     @KafkaListener(topics = "votes-topic", groupId = "${spring.kafka.consumer.group-id}")
-    public void kafkaConsumer(Object message, Vote vote) {
+    public void kafkaConsumer(Object message, SurveyRequest vote) {
         logger.info("Received kafka message: {}", vote.toString());
     }
 }

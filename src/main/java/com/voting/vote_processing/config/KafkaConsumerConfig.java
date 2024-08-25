@@ -1,6 +1,6 @@
 package com.voting.vote_processing.config;
 
-import com.voting.vote_processing.entity.Vote;
+import com.voting.vote_processing.entity.SurveyRequest;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +10,6 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
@@ -30,8 +29,8 @@ public class KafkaConsumerConfig {
     private String retryTimer;
 
     @Bean
-    public ConsumerFactory<String, Vote> consumerFactory() {
-        JsonDeserializer<Vote> deserializer = new JsonDeserializer<>(Vote.class);
+    public ConsumerFactory<String, SurveyRequest> consumerFactory() {
+        JsonDeserializer<SurveyRequest> deserializer = new JsonDeserializer<>(SurveyRequest.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeMapperForKey(true);
@@ -52,8 +51,8 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Vote> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Vote> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, SurveyRequest> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, SurveyRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
