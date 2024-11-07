@@ -19,13 +19,14 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
     private final ChannelTopic topic;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
 
-    public KafkaConsumerServiceImpl(RedisTemplate<String, Object> redisTemplate, ChannelTopic topic) {
+    public KafkaConsumerServiceImpl(RedisTemplate<String, Object> redisTemplate, ChannelTopic topic, ObjectMapper objectMapper) {
         this.redisTemplate = redisTemplate;
         this.topic = topic;
+        this.objectMapper = objectMapper;
     }
 
     @Override
