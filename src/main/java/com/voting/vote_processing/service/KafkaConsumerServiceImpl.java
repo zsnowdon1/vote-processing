@@ -5,7 +5,6 @@ import com.voting.vote_processing.entity.SelectedChoice;
 import com.voting.vote_processing.entity.SurveyRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,19 +15,17 @@ import java.util.HashMap;
 @Service
 public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
-    @Autowired
     private final RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private ChannelTopic topic;
+    private final ChannelTopic topic;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerServiceImpl.class);
 
-    @Autowired
-    public KafkaConsumerServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+    public KafkaConsumerServiceImpl(RedisTemplate<String, Object> redisTemplate, ChannelTopic topic) {
         this.redisTemplate = redisTemplate;
+        this.topic = topic;
     }
 
     @Override

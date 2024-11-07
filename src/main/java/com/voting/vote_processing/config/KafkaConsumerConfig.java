@@ -19,14 +19,19 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapAddress;
+    private final String bootstrapAddress;
 
-    @Value("${spring.kafka.consumer.group-id}")
-    private String groupId;
+    private final String groupId;
 
-    @Value("${spring.kafka.consumer.properties.max.poll.interval.ms}")
-    private String retryTimer;
+    private final String retryTimer;
+
+    public KafkaConsumerConfig(@Value("${spring.kafka.bootstrap-servers}") String bootstrapAddress,
+                               @Value("${spring.kafka.consumer.group-id}") String groupId,
+                               @Value("${spring.kafka.consumer.properties.max.poll.interval.ms}") String retryTimer) {
+        this.bootstrapAddress = bootstrapAddress;
+        this.groupId = groupId;
+        this.retryTimer = retryTimer;
+    }
 
     @Bean
     public ConsumerFactory<String, SurveyRequest> consumerFactory() {
