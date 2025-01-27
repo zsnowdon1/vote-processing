@@ -33,11 +33,11 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
     @KafkaListener(topics = "${spring.kafka.consumer.topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void kafkaConsumer(Object message, SurveyRequest vote) {
         logger.info("Received kafka message " + vote.toString());
-        long surveyId = vote.getSurveyId();
+        String surveyId = vote.getSurveyId();
         for(SelectedChoice choice: vote.getResponses()) {
             logger.info("Processing vote for question " + choice.getQuestionId());
-            String questionId = Long.toString(choice.getQuestionId());
-            String choiceId = Long.toString(choice.getChoiceId());
+            String questionId = choice.getQuestionId();
+            String choiceId = choice.getChoiceId();
 
             String redisKey = "survey:" + surveyId + ":question:" + questionId + ":results";
             logger.info("Incrementing votes for choice:" + choiceId);
