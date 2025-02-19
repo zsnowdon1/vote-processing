@@ -1,0 +1,39 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: vote-processing
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: vote-processor-group
+      topic: votes-topic
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
+        retry.backoff.ms: 60000
+        max.poll.interval.ms: 600000
+    listener:
+      concurrency: 3
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/voting
+    username: db
+    password: password
+
+  redis:
+    host: redis
+    port: 6379
+
+## LOGGING
+logging:
+  level:
+    root: INFO
+    com.voting: DEBUG
+  file:
+    name: ./logs/vote-processing.log
+shared:
+  log:
+    dir: ~/logs
